@@ -15,7 +15,8 @@
 #define K_CK  1
 #define K_SZ  2
 #define K_PN  3
-#define K_ZZ  4
+#define K_DT  4   // Ajoute cette ligne pour la colonne date
+#define K_ZZ  5   // Décale l'index de la colonne vide
 
 //
 // <<<< TreeWidget::TreeWidget
@@ -31,6 +32,7 @@ TreeWidget::TreeWidget( QWidget * p_Parent ): QTreeWidget( p_Parent )
   HeaderItem->setText( K_FN, QString( "File Name"   ) );
   HeaderItem->setText( K_SZ, QString( "Size (Bytes)") );
   HeaderItem->setText( K_PN, QString( "Path"        ) );
+  HeaderItem->setText( K_DT, QString( "Date modif." ) ); // Nouvelle colonne
   HeaderItem->setText( K_ZZ, QString( " "  ) );
 
   this->setHeaderItem( HeaderItem );
@@ -82,6 +84,7 @@ void TreeWidget::Add_FirstChild( QString p_FilePath )
 
   child->setIcon( K_FN, *( new QIcon( QPixmap( (const char **) I_ClosedFolder_16 ) ) ) );
   child->setText( K_PN, fileInfo.absoluteFilePath() );
+  child->setText( K_DT, fileInfo.lastModified().toString("dd.MM.yyyy hh:mm:ss") );
 
   this->clear();
   this->addTopLevelItem( child );
@@ -132,6 +135,8 @@ void TreeWidget::Add_Children( QString p_FilePath, QTreeWidgetItem * p_Item )
       child->setText( K_PN, fileInfo.absoluteFilePath() );
     }
 
+    child->setText( K_DT, fileInfo.lastModified().toString("dd.MM.yyyy hh:mm:ss") );
+
     if ( p_Item == 0 ) {
       this->addTopLevelItem( child );
     } else {
@@ -151,6 +156,7 @@ void TreeWidget::Adjust_ColumnSize()
   this->resizeColumnToContents( K_CK );
   this->resizeColumnToContents( K_SZ );
   this->resizeColumnToContents( K_PN );
+  this->resizeColumnToContents( K_DT );
   this->resizeColumnToContents( K_ZZ );
 
   this->update();

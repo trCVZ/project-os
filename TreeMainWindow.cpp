@@ -81,6 +81,9 @@ void TreeMainWindow::Choisir_Dossier_Racine( QString p_Dossier )
    }
 
   _TW_Dossier->Add_FirstChild( _Path_Dossier_Racine );
+
+  // Affiche le statut du dossier racine au lancement
+  Statut_Fichier(_Path_Dossier_Racine);
 }
 // >>>> TreeMainWindow::Choisir_Dossier_Racine
 
@@ -90,19 +93,32 @@ void TreeMainWindow::Choisir_Dossier_Racine( QString p_Dossier )
 //
 void TreeMainWindow::Statut_Fichier( QString p_Path )
 {
-  QString SPath = p_Path;
-  QFileInfo qFI( SPath );
+  QFileInfo qFI( p_Path );
+
+  if ( !qFI.exists() )
+    return;
 
   QDate mDate = qFI.lastModified().date();
   QTime mTime = qFI.lastModified().time();
 
   QString qDate = mDate.toString( "dd.MM.yyyy" );
-  QString qTime = mTime.toString( "hh.mm.ss" );
+  QString qTime = mTime.toString( "hh:mm:ss" );
 
-  QString qS_Modif = QString( "  -  ModifiÃ© le  %1  %2" ).arg( qDate ).arg( qTime );
+  QString message;
 
-  this->statusBar()->showMessage ( SPath + qS_Modif );
+  if (qFI.isDir()) {
+    message = QString("📁 Dossier : %1  -  Modifié le %2 à %3").arg(p_Path).arg(qDate).arg(qTime);
+  }
+  else if (qFI.isFile()) {
+    message = QString("📄 Fichier : %1  -  Modifié le %2 à %3").arg(p_Path).arg(qDate).arg(qTime);
+  }
+  else {
+    message = QString("❓ Autre : %1  -  Modifié le %2 à %3").arg(p_Path).arg(qDate).arg(qTime);
+  }
+
+  this->statusBar()->showMessage(message);
 }
+
 // >>>> TreeMainWindow::Statut_Fichier
 
 
