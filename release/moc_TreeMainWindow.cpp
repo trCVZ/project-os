@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_TreeMainWindow_t {
-    QByteArrayData data[10];
-    char stringdata0[145];
+    QByteArrayData data[11];
+    char stringdata0[155];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,14 +41,15 @@ QT_MOC_LITERAL(5, 71, 30), // "slot_PopupContextMenu_TreeView"
 QT_MOC_LITERAL(6, 102, 16), // "QTreeWidgetItem*"
 QT_MOC_LITERAL(7, 119, 6), // "p_item"
 QT_MOC_LITERAL(8, 126, 8), // "p_Column"
-QT_MOC_LITERAL(9, 135, 9) // "slot_QUIT"
+QT_MOC_LITERAL(9, 135, 9), // "slot_QUIT"
+QT_MOC_LITERAL(10, 145, 9) // "slot_Aide"
 
     },
     "TreeMainWindow\0slot_Choisir_Dossier_Racine\0"
     "\0slot_Statut_Fichier\0p_Path\0"
     "slot_PopupContextMenu_TreeView\0"
     "QTreeWidgetItem*\0p_item\0p_Column\0"
-    "slot_QUIT"
+    "slot_QUIT\0slot_Aide"
 };
 #undef QT_MOC_LITERAL
 
@@ -58,7 +59,7 @@ static const uint qt_meta_data_TreeMainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -66,15 +67,17 @@ static const uint qt_meta_data_TreeMainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   34,    2, 0x0a /* Public */,
-       3,    1,   35,    2, 0x0a /* Public */,
-       5,    2,   38,    2, 0x0a /* Public */,
-       9,    0,   43,    2, 0x0a /* Public */,
+       1,    0,   39,    2, 0x0a /* Public */,
+       3,    1,   40,    2, 0x0a /* Public */,
+       5,    2,   43,    2, 0x0a /* Public */,
+       9,    0,   48,    2, 0x0a /* Public */,
+      10,    0,   49,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    4,
     QMetaType::Void, 0x80000000 | 6, QMetaType::Int,    7,    8,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -90,6 +93,7 @@ void TreeMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 1: _t->slot_Statut_Fichier((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: _t->slot_PopupContextMenu_TreeView((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 3: _t->slot_QUIT(); break;
+        case 4: _t->slot_Aide(); break;
         default: ;
         }
     }
@@ -124,13 +128,13 @@ int TreeMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 5)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

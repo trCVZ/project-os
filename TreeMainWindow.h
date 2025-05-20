@@ -30,6 +30,7 @@ public slots:
   void slot_PopupContextMenu_TreeView( QTreeWidgetItem * p_item, int p_Column );
 
   void slot_QUIT();
+  void slot_Aide();
 
 protected:
   QString           _Path_Dossier_Racine;

@@ -34,6 +34,9 @@ TreeMainWindow::TreeMainWindow( QWidget * p_Parent )
 
   _Menu->addAction( "Quitter", this , SLOT ( slot_QUIT() ), Qt::ALT | Qt::Key_Q  );
 
+  QAction* aideAction = _Menu->addAction("Aide", this, SLOT(slot_Aide()));
+  aideAction->setShortcut(Qt::Key_F1);
+
   //-- SPLITTER
 
   _Splitter = new QSplitter( this );
@@ -248,4 +251,21 @@ void TreeMainWindow::slot_QUIT()
   qApp->quit();
 }
 // >>>> TreeMainWindow::slot_QUIT
+
+
+//
+// <<<< TreeMainWindow::slot_Aide
+//
+void TreeMainWindow::slot_Aide()
+{
+  QMessageBox::information(this, "Aide", 
+    "Bienvenue dans l'application !\n\n"
+    "• F1 ou menu Fichier > Aide : afficher cette aide\n"
+    "• ALT+S : choisir le dossier racine\n"
+    "• ALT+Q : quitter\n"
+    "• Cliquez sur un fichier ou dossier pour voir ses informations\n"
+    "• La colonne 'Date modif.' affiche la date de dernière modification\n"
+  );
+}
+// >>>> TreeMainWindow::slot_Aide
 
