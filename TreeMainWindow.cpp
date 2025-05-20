@@ -12,6 +12,13 @@
 #include  "FileOpen.xpm"
 #include  "FileSave.xpm"
 
+#define K_FN  0
+#define K_CK  1
+#define K_SZ  2
+#define K_PN  3
+#define K_DT  4
+#define K_ZZ  5
+
 //
 // <<<< TreeMainWindow::TreeMainWindow
 //
@@ -172,69 +179,68 @@ void TreeMainWindow::slot_Statut_Fichier( QString p_Path )
 //
 // <<<< TreeMainWindow::slot_PopupContextMenu_TreeView
 //
-void TreeMainWindow::slot_PopupContextMenu_TreeView( QTreeWidgetItem * p_Item, int )
+void TreeMainWindow::slot_PopupContextMenu_TreeView(QTreeWidgetItem *p_Item, int)
 {
-  QMenu PopupM( "PopupMenu TreeView" );
+  QMenu PopupM("PopupMenu TreeView");
 
-  if ( ! p_Item ) {
+  if (!p_Item) {
     return;
   }
 
-  QString PathName = _TW_Dossier->Get_PathName( p_Item );
+  QString PathName = _TW_Dossier->Get_PathName(p_Item);
+  QFileInfo FI_Path(PathName);
+  FI_Path.setCaching(false);
 
-  QFileInfo FI_Path( PathName );
-
-  FI_Path.setCaching( false );
-
-  while ( FI_Path.isSymLink() ) {
-    PathName =  FI_Path.symLinkTarget();
-    FI_Path.setFile( PathName );
+  while (FI_Path.isSymLink()) {
+    PathName = FI_Path.symLinkTarget();
+    FI_Path.setFile(PathName);
   }
 
-  if ( PathName.isEmpty() ) return;
+  if (PathName.isEmpty()) return;
 
-  QAction * X_Action_DIR = NULL;
-  QAction * X_Action_TXT = NULL;
+  QAction *actionCopyPath = PopupM.addAction("Copier le chemin");
 
-  if ( FI_Path.isDir() ) {
+  QAction *actionRename = nullptr;
+  QAction *actionDelete = nullptr;
 
-    X_Action_DIR = PopupM.addAction( QString( "Ouvrir ce dossier" ) );
+  if (FI_Path.isFile()) {
+    actionRename = PopupM.addAction("Renommer");
+    actionDelete = PopupM.addAction("Supprimer");
+  }
 
-  } else if ( FI_Path.isFile() ) {
+  QPoint PM_Point = QCursor::pos() + QPoint(12, 8);
+  QAction *ACT_x = PopupM.exec(PM_Point);
 
-    QString SFX = QString( ".%1;" ).arg( FI_Path.suffix() );
+  if (ACT_x == nullptr) {
+    return;
+  }
 
-    if ( QString( ".cpp;.h;.xpm;.pro;" ).contains( SFX.toLower() ) ) {
-      X_Action_TXT = PopupM.addAction( QString( "Afficher le fichier" ) );
+  if (ACT_x == actionCopyPath) {
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText(PathName);
+  }
+
+  if (ACT_x == actionRename) {
+    bool ok;
+    QString newName = QInputDialog::getText(this, "Renommer", "Nouveau nom :", QLineEdit::Normal, FI_Path.fileName(), &ok);
+    if (ok && !newName.isEmpty() && newName != FI_Path.fileName()) {
+      QString newPath = FI_Path.dir().absoluteFilePath(newName);
+      if (QFile::rename(PathName, newPath)) {
+        p_Item->setText(K_FN, newName);
+        p_Item->setText(K_PN, newPath);
+      } else {
+        QMessageBox::warning(this, "Erreur", "Impossible de renommer le fichier.");
+      }
     }
-  } else {
-    return;
   }
 
-  QPoint PM_Point = QCursor::pos() + QPoint( 12, 8 );
-
-  QAction * ACT_x = PopupM.exec( PM_Point );
-
-  if ( ACT_x == NULL ) {
-    return;
-  }
-
-  if ( ACT_x == X_Action_DIR ) {
-    this->Choisir_Dossier_Racine( PathName );
-  }
-
-  if ( ACT_x == X_Action_TXT ) {
-    QFile Fd_R( PathName );
-
-    if ( Fd_R.open( QIODevice::ReadOnly ) ) {
-      QTextStream TS_R( &Fd_R );
-      // TS_R.setCodec( QTextCodec::codecForName( "UTF-8" );
-      QString S_TEXT = TS_R.readAll();
-      Fd_R.close();
-
-      _TextEdit->setReadOnly( false );
-      _TextEdit->setText( S_TEXT );
-      _TextEdit->setReadOnly( true );
+  if (ACT_x == actionDelete) {
+    if (QMessageBox::question(this, "Supprimer", "Voulez-vous vraiment supprimer ce fichier ?") == QMessageBox::Yes) {
+      if (QFile::remove(PathName)) {
+        delete p_Item;
+      } else {
+        QMessageBox::warning(this, "Erreur", "Suppression impossible.");
+      }
     }
   }
 }
