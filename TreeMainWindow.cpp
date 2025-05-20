@@ -112,9 +112,6 @@ void TreeMainWindow::Statut_Fichier( QString p_Path )
   else if (qFI.isFile()) {
     message = QString("📄 Fichier : %1  -  Modifié le %2 à %3").arg(p_Path).arg(qDate).arg(qTime);
   }
-  else {
-    message = QString("❓ Autre : %1  -  Modifié le %2 à %3").arg(p_Path).arg(qDate).arg(qTime);
-  }
 
   this->statusBar()->showMessage(message);
 }

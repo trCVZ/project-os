@@ -14,4 +14,7 @@ SOURCES += TreeMainWindow.cpp
 SOURCES += TreeWidget.cpp
 SOURCES += TextEdit.cpp
 
+msvc:RC_FILE += tv2.rc
+msvc:QMAKE_RC = rc -D_MSC_VER
+
 TARGET = tv2

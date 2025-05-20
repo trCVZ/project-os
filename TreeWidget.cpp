@@ -15,8 +15,8 @@
 #define K_CK  1
 #define K_SZ  2
 #define K_PN  3
-#define K_DT  4   // Ajoute cette ligne pour la colonne date
-#define K_ZZ  5   // Décale l'index de la colonne vide
+#define K_DT  4
+#define K_ZZ  5 
 
 //
 // <<<< TreeWidget::TreeWidget
@@ -32,7 +32,7 @@ TreeWidget::TreeWidget( QWidget * p_Parent ): QTreeWidget( p_Parent )
   HeaderItem->setText( K_FN, QString( "File Name"   ) );
   HeaderItem->setText( K_SZ, QString( "Size (Bytes)") );
   HeaderItem->setText( K_PN, QString( "Path"        ) );
-  HeaderItem->setText( K_DT, QString( "Date modif." ) ); // Nouvelle colonne
+  HeaderItem->setText( K_DT, QString( "Date modif." ) );
   HeaderItem->setText( K_ZZ, QString( " "  ) );
 
   this->setHeaderItem( HeaderItem );
@@ -341,7 +341,6 @@ void TreeWidget::slot_currentItemChanged( QTreeWidgetItem * p_Current
 //
 void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column)
 {
-    if (column == K_CK) { // Vérifie si la colonne correspond à la case à cocher
         Qt::CheckState state = item->checkState(K_CK);
 
         // Applique l'état à tous les enfants
@@ -349,7 +348,6 @@ void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column)
             QTreeWidgetItem *child = item->child(i);
             child->setCheckState(K_CK, state);
         }
-    }
 }
 // >>>> TreeWidget::onItemChanged
 
